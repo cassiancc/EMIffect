@@ -5,21 +5,22 @@ import dev.emi.emi.EmiPort;
 import dev.emi.emi.EmiUtil;
 import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.StatusEffectSpriteManager;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.potion.PotionUtil;
-import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -53,14 +54,14 @@ public class StatusEffectEmiStack extends EmiStack {
     }
 
     @Override
-    public void render(DrawContext draw, int x, int y, float delta, int flags) {
+    public void render(MatrixStack matrices, int x, int y, float delta, int flags) {
         StatusEffectSpriteManager sprites = MinecraftClient.getInstance().getStatusEffectSpriteManager();
         if (effect != null) {
             Sprite sprite = sprites.getSprite(effect);
             RenderSystem.clearColor(1.0F, 1.0F,1.0F,1.0F);
-            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-            RenderSystem.setShaderTexture(0, sprite.getAtlasId());
-            draw.drawSprite(x, y, 0, 18, 18, sprite);
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShaderTexture(0, sprite.getAtlas().getId());
+            DrawableHelper.drawSprite(matrices, x, y, 0, 18, 18, sprite);
             RenderSystem.applyModelViewMatrix();
         }
     }
@@ -77,7 +78,7 @@ public class StatusEffectEmiStack extends EmiStack {
 
     @Override
     public Identifier getId() {
-        return Registries.STATUS_EFFECT.getId(effect);
+        return Registry.STATUS_EFFECT.getId(effect);
     }
 
     @Override
@@ -99,7 +100,7 @@ public class StatusEffectEmiStack extends EmiStack {
         }
         tooltips.add(TooltipComponent.of(EmiPort.ordered(
                 EmiPort.translatable("tooltip.emiffect.color", "#" + String.format("%02x", effect.getColor())).formatted(Formatting.GRAY))));
-        Identifier id = Registries.STATUS_EFFECT.getId(effect);
+        Identifier id = Registry.STATUS_EFFECT.getId(effect);
         if (id != null)
             tooltips.add(TooltipComponent.of(EmiPort.ordered(EmiPort.literal(EmiUtil.getModName(id.getNamespace()), Formatting.BLUE, Formatting.ITALIC))));
         return tooltips;

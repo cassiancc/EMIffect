@@ -20,10 +20,10 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtil;
-import net.minecraft.registry.Registries;
 import net.minecraft.text.OrderedText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -38,9 +38,9 @@ public class StatusEffectInfo implements EmiRecipe {
     private final StatusEffectEmiStack emiStack;
 
     public StatusEffectInfo(StatusEffect effect, StatusEffectEmiStack emiStack) {
-        this.id = Registries.STATUS_EFFECT.getId(effect) != null ? Registries.STATUS_EFFECT.getId(effect) : new Identifier("emiffect", "missingno");
+        this.id = Registry.STATUS_EFFECT.getId(effect) != null ? Registry.STATUS_EFFECT.getId(effect) : new Identifier("emiffect", "missingno");
         List<EmiIngredient> inputs0 = new ArrayList<>();
-        for (Potion potion : Registries.POTION) {
+        for (Potion potion : Registry.POTION) {
             for (StatusEffectInstance instance : potion.getEffects()) {
                 if (instance.getEffectType().equals(effect)) {
                     inputs0.addAll(List.of(EmiStack.of(PotionUtil.setPotion(Items.POTION.getDefaultStack(), potion)),
@@ -51,7 +51,7 @@ public class StatusEffectInfo implements EmiRecipe {
                 }
             }
         }
-        for (Block block : Registries.BLOCK) {
+        for (Block block : Registry.BLOCK) {
             if (block instanceof FlowerBlock flower) {
                 ItemStack stew = new ItemStack(Items.SUSPICIOUS_STEW);
                 StatusEffect flowerEffect = flower.getEffectInStew();
@@ -62,7 +62,7 @@ public class StatusEffectInfo implements EmiRecipe {
                 }
             }
         }
-        for (Item item : Registries.ITEM) {
+        for (Item item : Registry.ITEM) {
             FoodComponent food = item.getFoodComponent();
             if (food != null) {
                 ItemStack stack = new ItemStack(item);

@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[47,)"
+loaderVersion = "[43,)"
 issueTrackerURL = "https://github.com/Prismwork/EMIffect/issues"
 license = "MIT"
 
@@ -16,14 +16,14 @@ logoFile = "icon.png"
 [[dependencies.emiffect]]
 modId = "forge"
 mandatory = true
-versionRange = "[47,)"
+versionRange = "[43,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.emiffect]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.20.1,)"
+versionRange = "[1.19.1,1.20)"
 ordering = "NONE"
 side = "CLIENT"
 

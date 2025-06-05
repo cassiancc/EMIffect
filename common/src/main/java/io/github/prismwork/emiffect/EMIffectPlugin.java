@@ -13,8 +13,8 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 @EmiEntrypoint
 public class EMIffectPlugin implements EmiPlugin {
@@ -25,7 +25,7 @@ public class EMIffectPlugin implements EmiPlugin {
 
     @Override
     public void register(EmiRegistry registry) {
-        for (StatusEffect effect : Registries.STATUS_EFFECT) {
+        for (StatusEffect effect : Registry.STATUS_EFFECT) {
             StatusEffectEmiStack stack = StatusEffectEmiStack.of(effect);
             registry.addRecipe(new StatusEffectInfo(effect, stack));
             registry.addEmiStack(stack);
@@ -36,7 +36,7 @@ public class EMIffectPlugin implements EmiPlugin {
         registry.addWorkstation(CATEGORY, EmiStack.of(Items.SPLASH_POTION));
         registry.addWorkstation(CATEGORY, EmiStack.of(Items.LINGERING_POTION));
         registry.addWorkstation(CATEGORY, EmiStack.of(Items.SUSPICIOUS_STEW));
-        for (Item item : Registries.ITEM) {
+        for (Item item : Registry.ITEM) {
             FoodComponent food = item.getFoodComponent();
             if (food != null) {
                 if (!food.getStatusEffects().isEmpty()) {
